@@ -1,12 +1,10 @@
 import React from 'react';
-import './styles/App.css';
+import './../styles/App.css';
+import UserBoard from './UserBoard';
 
 const App: React.FC = () => {
     return (
-        <div className="App">
-            <h1>Welcome to the Frontend Application</h1>
-            {/* Additional components can be included here */}
-        </div>
+        <UserBoard/>
     );
 };
 

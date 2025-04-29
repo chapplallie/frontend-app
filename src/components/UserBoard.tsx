@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/UserBoard.css';
 
-
 interface User {
   id: number;
   pseudo: string;
@@ -11,7 +10,6 @@ interface User {
 }
 
 const UserBoard: React.FC = () => {
-  
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +24,6 @@ const UserBoard: React.FC = () => {
         setUsers(data);
         setLoading(false);
       })
-      
       .catch((error) => {
         console.error('Error fetching users:', error);
         setLoading(false);
@@ -48,6 +45,7 @@ const UserBoard: React.FC = () => {
             <th>Email</th>
             <th>Bank</th>
             <th>Victory Stats</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +56,15 @@ const UserBoard: React.FC = () => {
               <td>{user.email}</td>
               <td>{user.bank}</td>
               <td>{user.victoryStats}</td>
+              <td>
+                <button
+                  onClick={() => {
+                    window.location.href = `https://localhost:3001/${user.id}`;
+                  }}
+                >
+                  View
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
