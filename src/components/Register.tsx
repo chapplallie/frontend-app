@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import './../styles/Login.css';
 
 const Register: React.FC = () => {
   const [pseudo, setPseudo] = useState('');
+    const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -27,24 +29,50 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Pseudo"
-          value={pseudo}
-          onChange={(e) => setPseudo(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Register</button>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    
+    <div className="login-container">
+      <div className="login-box">
+        <h2 className="login-title">Register</h2>
+        <form onSubmit={handleRegister} className="login-form">
+          <div className="form-group">
+            <label htmlFor="pseudo">Pseudo</label>
+            <input
+              id="pseudo"
+              type="text"
+              placeholder="Enter your pseudo"
+              value={pseudo}
+              onChange={(e) => setPseudo(e.target.value)}
+              className="form-input"
+            />
+          </div>
+
+        <div className="form-group">
+            <label htmlFor="email">Email</label>
+                <input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-input"
+                />
+        </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="form-input"
+            />
+          </div>
+          <button type="submit" className="login-button">Register</button>
+        </form>
+        {error && <p className="error-message">{error}</p>}
+      </div>
     </div>
   );
 };

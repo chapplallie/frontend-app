@@ -4,12 +4,15 @@ import UserPage from './[userId]/page';
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/:userId" element={<UserPage />} />
-      </Routes>
-    </Router>
+    <body>  
+      <Router>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/:userId" element={<UserPage />} />
+        </Routes>
+      </Router> 
+    </body>
+
   );
 };
 

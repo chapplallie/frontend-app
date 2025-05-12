@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './../styles/Login.css'; // Import the CSS file for styling
 
 const Login: React.FC = () => {
   const [pseudo, setPseudo] = useState('');
@@ -29,25 +30,38 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Pseudo"
-          value={pseudo}
-          onChange={(e) => setPseudo(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <div className="login-container">
+      <div className="login-box">
+        <h2 className="login-title">Login</h2>
+        <form onSubmit={handleLogin} className="login-form">
+          <div className="form-group">
+            <label htmlFor="pseudo">Pseudo</label>
+            <input
+              id="pseudo"
+              type="text"
+              placeholder="Votre pseudo"
+              value={pseudo}
+              onChange={(e) => setPseudo(e.target.value)}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">mdp</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="form-input"
+            />
+          </div>
+          <button type="submit" className="login-button">Login</button>
+        </form>
+        {error && <p className="error-message">{error}</p>}
+      </div>
     </div>
+
   );
 };
 
