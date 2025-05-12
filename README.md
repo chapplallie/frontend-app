@@ -1,3 +1,10 @@
+![image](https://github.com/user-attachments/assets/d5604b97-22fc-45ce-bea4-7915b21101a4)
+
+
+
+
+
+
 # Frontend Application
 
 This is a TypeScript-based front-end application that connects to an API. The application is structured to provide a clean separation of concerns, with components, services, styles, utilities, and types organized in a modular fashion.
