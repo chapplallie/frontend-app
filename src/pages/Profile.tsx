@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { API_BASE_URL } from '../services/api'; // Adjust the import path as necessary
 import UserCard from '../components/UserCard';
 
 interface User {
@@ -17,8 +17,8 @@ const UserPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_BASE_URL;
-    fetch(`${apiUrl}/users/${userId}`)
+    //const apiUrl = process.env.REACT_APP_API_BASE_URL;
+    fetch(`${API_BASE_URL}/users/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         setUser(data);
