@@ -1,6 +1,6 @@
 import React from 'react';
-import './Tables.css';
-import Nav from '../../src/components/Nav';
+import './../styles/Tables.css';
+import Nav from '../components/Nav';
 
 
 const tables = [
@@ -33,7 +33,7 @@ const tables = [
 const Page: React.FC = () => {
   return (
     <div className="page-container">
-     <Nav/>
+      <Nav />
 
       {/* Tables Section */}
       <div className="tables-container">
@@ -44,6 +44,7 @@ const Page: React.FC = () => {
             <p>Big Blind: {table.bigBlind}</p>
             <p>Players: {table.players}</p>
             <p>Status: {table.status}</p>
+            {/* todo */}
             <button className="join-button">Rejoindre</button>
           </div>
         ))}

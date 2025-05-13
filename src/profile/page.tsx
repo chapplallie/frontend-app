@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import UserCard from '../../src/components/UserCard';
+import UserCard from '../components/UserCard';
 
 interface User {
   id: number;

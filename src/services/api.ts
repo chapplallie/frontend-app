@@ -1,4 +1,5 @@
 import axios from 'axios';
+// todo : remplacer par l'url de l'api ?
 
 const API_BASE_URL = 'https://api.example.com'; // Replace with your API base URL
 
