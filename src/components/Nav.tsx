@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './../styles/Nav.css';
 import logo from '../assets/images/logo.png';
+import logo2 from '../assets/images/bernard-tapis.png';
 
 const Nav: React.FC = () => {
   const isAuthenticated = !!localStorage.getItem('token');
@@ -19,6 +20,9 @@ const Nav: React.FC = () => {
     <nav className="nav-container">
       <a href="/" className="logo-container">
         <img className='app-logo' src={logo} alt="Poker app logo" />
+      </a>
+      <a href="/" className="logo-container">
+        <img className='app-logo-2' src={logo2} alt="Poker app logo typo" />
       </a>
       
       <div className="hamburger-menu" onClick={toggleMenu}>

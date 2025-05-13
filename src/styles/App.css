@@ -8,7 +8,7 @@
   font-family: Arial, sans-serif;
   background-image: url("../assets/images/red-background.jpg");
   background-position: center;
-  height: 98vh;
+  min-height: 98vh;
 }
 
 .app-header {

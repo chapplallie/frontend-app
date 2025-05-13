@@ -94,6 +94,10 @@
   max-width: 100px;
 }
 
+.app-logo-2 {
+  max-width: 300px;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     position: fixed;

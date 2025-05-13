@@ -19,10 +19,10 @@ const Register: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Registration failed');
+        throw new Error('Inscription échouée');
       }
 
-      alert('Registration successful! You can now log in.');
+      alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
     } catch (err: any) {
       setError(err.message);
     }
@@ -32,14 +32,14 @@ const Register: React.FC = () => {
     
     <div className="login-container">
       <div className="login-box">
-        <h2 className="login-title">Register</h2>
+        <h2 className="login-title">Inscription</h2>
         <form onSubmit={handleRegister} className="login-form">
           <div className="form-group">
             <label htmlFor="pseudo">Pseudo</label>
             <input
               id="pseudo"
               type="text"
-              placeholder="Enter your pseudo"
+              placeholder="Entrer votre pseudo"
               value={pseudo}
               onChange={(e) => setPseudo(e.target.value)}
               className="form-input"
@@ -51,7 +51,7 @@ const Register: React.FC = () => {
                 <input
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Entrer votre email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="form-input"
@@ -59,17 +59,17 @@ const Register: React.FC = () => {
         </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Mot de passe</label>
             <input
               id="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="Entrer votre mot de passe"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="form-input"
             />
           </div>
-          <button type="submit" className="login-button">Register</button>
+          <button type="submit" className="login-button">S'inscrire</button>
         </form>
         {error && <p className="error-message">{error}</p>}
       </div>

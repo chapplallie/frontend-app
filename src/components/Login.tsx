@@ -20,12 +20,12 @@ const Login: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Invalid credentials');
+        throw new Error('Identifiants invalides');
       }
 
       const data = await response.json();
       localStorage.setItem('token', data.token);
-      alert('Login successful!');
+      alert('Connexion réussie !');
       navigate('/profile');
     } catch (err: any) {
       setError(err.message);
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2 className="login-title">Login</h2>
+        <h2 className="login-title">Connexion</h2>
         <form onSubmit={handleLogin} className="login-form">
           <div className="form-group">
             <label htmlFor="pseudo">Pseudo</label>
@@ -49,17 +49,17 @@ const Login: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">mdp</label>
+            <label htmlFor="password">Mot de passe</label>
             <input
               id="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="Votre mot de passe"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="form-input"
             />
           </div>
-          <button type="submit" className="login-button" >Login</button>
+          <button type="submit" className="login-button" >Connexion</button>
         </form>
         {error && <p className="error-message">{error}</p>}
       </div>
