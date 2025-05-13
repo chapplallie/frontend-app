@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './../styles/Login.css';
+import { API_BASE_URL } from '../services/api';
 
 const Register: React.FC = () => {
   const [pseudo, setPseudo] = useState('');
@@ -10,12 +11,12 @@ const Register: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ pseudo, password }),
+        body: JSON.stringify({ pseudo, email, password }),
       });
 
       if (!response.ok) {
