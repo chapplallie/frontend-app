@@ -35,12 +35,12 @@ const UserPage: React.FC = () => {
   }
 
   if (!user) {
-    return <div>User not found</div>;
+    return <div>user inconnu</div>;
   }
 
   return (
     <div>
-      <h1>User Details</h1>
+      <h1>Profile de {user.pseudo}</h1>
       <UserCard user={user} />
     </div>
   );
