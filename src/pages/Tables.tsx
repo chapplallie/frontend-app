@@ -1,7 +1,5 @@
 import React from 'react';
 import './../styles/Tables.css';
-import Nav from '../components/Nav';
-
 
 const tables = [
   {
@@ -30,12 +28,9 @@ const tables = [
   },
 ];
 
-const Page: React.FC = () => {
+const TablesPage: React.FC = () => {
   return (
-    <div className="page-container">
-      <Nav />
-
-      {/* Tables Section */}
+    // <div className="page-container">
       <div className="tables-container">
         {tables.map((table) => (
           <div key={table.id} className="table-card">
@@ -44,13 +39,12 @@ const Page: React.FC = () => {
             <p>Big Blind: {table.bigBlind}</p>
             <p>Players: {table.players}</p>
             <p>Status: {table.status}</p>
-            {/* todo */}
-            <button className="join-button">Rejoindre</button>
+            <button className="join-button" onClick={() => (window.location.href = '/game')}>Rejoindre</button>
           </div>
         ))}
       </div>
-    </div>
+    // </div>
   );
 };
 
-export default Page;
+export default TablesPage;

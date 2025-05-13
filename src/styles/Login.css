@@ -7,8 +7,11 @@
 }
 
 .login-box {
-  background-color: #fff;
-  padding: 20px 30px;
+  background-image: url("../assets/images/card-carpet.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 100px 250px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 600px;
