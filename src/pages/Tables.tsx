@@ -1,7 +1,7 @@
 import './../styles/Tables.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+ 
 interface Table {
   id: number;
   name: string;
@@ -20,14 +20,14 @@ interface Table {
   minPlayers: number;
   gameLog: any[];
 }
-
+ 
 const TablesPage: React.FC = () => {
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [joiningTable, setJoiningTable] = useState<boolean>(false);
   const navigate = useNavigate();
-
+ 
   useEffect(() => {
     const fetchTables = async () => {
       try {
@@ -38,11 +38,11 @@ const TablesPage: React.FC = () => {
             'Content-Type': 'application/json',
           },
         });
-
+ 
         if (!response.ok) {
           throw new Error('Impossible de récupérer les tables');
         }
-
+ 
         const data = await response.json();
         setTables(data);
       } catch (err: any) {
@@ -51,22 +51,22 @@ const TablesPage: React.FC = () => {
         setLoading(false);
       }
     };
-
+ 
     fetchTables();
   }, []);
-
+ 
   const handleJoinTable = async (tableId: number) => {
     try {
       setJoiningTable(true);
       const token = localStorage.getItem('token');
       console.log('token:', token);
-      
+     
       if (!token) {
         alert('Vous devez être connecté pour rejoindre une table');
         navigate('/login');
         return;
       }
-      
+     
       const response = await fetch(`http://localhost:3000/tables/${tableId}`, {
         method: 'POST',
         headers: {
@@ -75,12 +75,12 @@ const TablesPage: React.FC = () => {
         },
         body: JSON.stringify({ action: 'join' })
       });
-
+ 
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message || 'Impossible de rejoindre la table');
       }
-
+ 
       // Si la requête réussit, on navigue vers la page du jeu
       navigate('/game');
     } catch (err: any) {
@@ -106,9 +106,9 @@ const TablesPage: React.FC = () => {
             <p>Big Blind: {table.bigBlind}</p>
             <p>Joueurs: {table.players.length} / {table.maxPlayers}</p>
             <p>Statut: {table.status}</p>
-            <button 
-              className="join-button" 
-              onClick={() => handleJoinTable(table.id)} 
+            <button
+              className="join-button"
+              onClick={() => handleJoinTable(table.id)}
               disabled={joiningTable}
             >
               {joiningTable ? 'Connexion...' : 'Rejoindre'}
@@ -119,5 +119,5 @@ const TablesPage: React.FC = () => {
     </div>
   );
 };
-
+ 
 export default TablesPage;
