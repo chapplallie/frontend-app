@@ -9,12 +9,29 @@ interface User {
   victoryStats: number;
 }
 
-const UserCard: React.FC<{ user: User }> = ({ user }) => {
+const UserCard: React.FC<{ user: User; error?: string }> = ({ user, error }) => {
+  if (error) {
+    return (
+      <div className="user-card error">
+        <p data-testid="user-error" style={{ color: 'red' }}>
+          <strong>Erreur:</strong> {error}
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="user-card">
+    <div
+      className="user-card"
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/tache-jaune.png)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       <h2>{user.pseudo}</h2>
       <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Bank:</strong> {user.bank}</p>
+      <p data-testid="user-bank"><strong>Bank:</strong> {user.bank}</p>
       <p><strong>Victory Stats:</strong> {user.victoryStats}</p>
     </div>
   );

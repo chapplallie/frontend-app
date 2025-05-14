@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   return (
     <div className="home-container">
       <h1>Bienvenue sur...</h1>
-      <div className="home-content">
+      <div className="home-content ">
         <div className="bernard">
           <img className="wordart" src={tapinade} alt="Bernard, Tapis !" />
           <img className="poker-app" src={pokerApp} alt="Poker App" />
