@@ -24,7 +24,9 @@ const Login: React.FC = () => {
       }
 
       const data = await response.json();
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('id', data.id)
+      localStorage.setItem('token', data.access_token);
+      console.log('data', data);
       alert('Connexion réussie !');
       navigate('/profile');
     } catch (err: any) {

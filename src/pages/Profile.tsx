@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { API_BASE_URL } from '../services/api'; // Adjust the import path as necessary
+//import { useParams } from 'react-router-dom';
+import { API_BASE_URL } from '../services/api';
 import UserCard from '../components/UserCard';
 
 interface User {
@@ -12,13 +12,20 @@ interface User {
 }
 
 const UserPage: React.FC = () => {
-  const { userId } = useParams<{ userId: string }>();
+  const token = localStorage.getItem('token');
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    //const apiUrl = process.env.REACT_APP_API_BASE_URL;
-    fetch(`${API_BASE_URL}/users/${userId}`)
+   
+
+    fetch(`${API_BASE_URL}/auth/profile`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
       .then((response) => response.json())
       .then((data) => {
         setUser(data);
@@ -28,7 +35,8 @@ const UserPage: React.FC = () => {
         console.error('Error fetching user:', error);
         setLoading(false);
       });
-  }, [userId]);
+  }, [token]);
+  console.log("user", user);
 
   if (loading) {
     return <div>Loading...</div>;
