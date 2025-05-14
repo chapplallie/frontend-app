@@ -19,7 +19,7 @@ const UserPage: React.FC = () => {
   useEffect(() => {
    
 
-    fetch(`${API_BASE_URL}/auth/profile`, {
+    fetch(`${API_BASE_URL}/users/profile`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -37,6 +37,14 @@ const UserPage: React.FC = () => {
       });
   }, [token]);
   console.log("user", user);
+
+      // fetch(`${API_BASE_URL}/users/${user?.id}`, {
+      //   method: 'GET',
+      //   headers: {
+      //     'Authorization': `Bearer ${token}`,
+      //     'Content-Type': 'application/json',
+      // },
+  // })
 
   if (loading) {
     return <div>Loading...</div>;
