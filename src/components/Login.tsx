@@ -38,7 +38,7 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2 className="login-title">Page Login</h2>
+        <h2 className="login-title">Connexion</h2>
         <form onSubmit={handleLogin} className="login-form">
           <div className="form-group">
             <label htmlFor="pseudo">Pseudo</label>

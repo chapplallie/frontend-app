@@ -40,12 +40,6 @@ const GamePage: React.FC = () => {
     setTimeout(() => setErrorMessage(null), 5000);
   };
   
-  // Fonction pour afficher les messages de succès
-  const showSuccess = (message: string) => {
-    setSuccessMessage(message);
-    setTimeout(() => setSuccessMessage(null), 5000);
-  };
-  
   useEffect(() => {
     let isMounted = true;
     // console.log('Effet exécuté, tableId:', tableId);
@@ -444,7 +438,7 @@ const GamePage: React.FC = () => {
                   <button
                     className="action-button start"
                     onClick={() => handleStartGame(table.id)}
-                    disabled={startingGame || table.players.length < table.minPlayers}
+                    disabled={startingGame}
                   >
                     {startingGame ? 'Démarrage...' : 'Démarrer la partie'}
                   </button>
