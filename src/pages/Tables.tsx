@@ -99,8 +99,8 @@ const TablesPage: React.FC = () => {
         tables.map((table) => (
           <div key={table.id} className="table-card">
             <h3>{table.name}</h3>
-            <p>Small Blind: {table.smallBlind}</p>
-            <p>Big Blind: {table.bigBlind}</p>
+            <p>Petite Blind: {table.smallBlind}</p>
+            <p>Grosse Blind: {table.bigBlind}</p>
             <p>Joueurs: {table.players.length} / {table.maxPlayers}</p>
             <p>Statut: {table.status}</p>
             <button

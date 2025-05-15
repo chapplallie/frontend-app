@@ -24,7 +24,7 @@
   },
   "include": [
     "src/**/*"
-  ],
+, "src/tests"  ],
   "exclude": [
     "node_modules",
     "dist"

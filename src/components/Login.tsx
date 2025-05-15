@@ -7,6 +7,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ const Login: React.FC = () => {
       localStorage.setItem('id', data.id)
       localStorage.setItem('token', data.access_token);
       console.log('data', data);
-      alert('Connexion réussie !');
+      setSuccess('Connexion réussie !'); 
       navigate('/profile');
     } catch (err: any) {
       setError(err.message);
@@ -37,7 +38,7 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2 className="login-title">Connexion</h2>
+        <h2 className="login-title">Page Login</h2>
         <form onSubmit={handleLogin} className="login-form">
           <div className="form-group">
             <label htmlFor="pseudo">Pseudo</label>
@@ -63,6 +64,7 @@ const Login: React.FC = () => {
           </div>
           <button type="submit" className="login-button" >Connexion</button>
         </form>
+        {success && <p className="success-message">{success}</p>}
         {error && <p className="error-message">{error}</p>}
       </div>
     </div>
