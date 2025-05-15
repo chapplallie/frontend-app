@@ -444,7 +444,7 @@ const GamePage: React.FC = () => {
                   <button
                     className="action-button start"
                     onClick={() => handleStartGame(table.id)}
-                    disabled={startingGame || table.players.length < table.minPlayers}
+                    disabled={startingGame}
                   >
                     {startingGame ? 'Démarrage...' : 'Démarrer la partie'}
                   </button>
