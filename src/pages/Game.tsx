@@ -262,7 +262,8 @@ const GamePage: React.FC = () => {
   };
 
   //! ici le return !!!!!
-  return (    <div className="game-container">
+  return (    
+    <div className="game-container">
       {errorMessage && (
         <div className="error-notification">
           <span className="message">{errorMessage}</span>
@@ -280,12 +281,11 @@ const GamePage: React.FC = () => {
       {loading ? (
         <p>Chargement de la partie...</p>
       ) : error ? (
-        <p className="error-message">{error}</p>
-      ) : !table ? (
+        <p className="error-message">{error}</p>      ) : !table ? (
         <p>Aucune information disponible pour cette table.</p>
       ) : (
         <>
-          <div className="table-header">
+          <div className="table-header container-block">
             <div className="table-info">
               <h3>{table.name}</h3>
               <div className="table-status">
@@ -295,8 +295,7 @@ const GamePage: React.FC = () => {
                   <span className="status-badge waiting">En attente</span>
                 )}
               </div>
-            </div>
-            <div className="table-stats">
+            </div>          <div className="table-stats">
               <div className="stat-item">
                 <span className="stat-label">Tour:</span>
                 <span className="stat-value">{table.turn}/4</span>
@@ -310,176 +309,184 @@ const GamePage: React.FC = () => {
                 <span className="stat-value bet">{table.currentBet}€</span>
               </div>
               <div className="stat-item">
+                <span className="stat-label">Blindes:</span>
+                <span className="stat-value">{table.smallBlind}€ / {table.bigBlind}€</span>
+              </div>
+              <div className="stat-item">
                 <span className="stat-label">Joueurs:</span>
                 <span className="stat-value">{table.players.length}/{table.maxPlayers}</span>
               </div>
             </div>
           </div>
 
-          <div className="game-log">
-            <h4>Avancement de la partie (Tour {table.turn}/4)</h4>
-            <ul className="logs">
-              {table.gameLog && table.gameLog.length > 0 ? (
-                table.gameLog.map((log, index) => (
-                  <li key={index}>
-                    {typeof log === 'string'
-                      ? log
-                      : log.message
-                        ? `${log.timestamp ? new Date(log.timestamp).toLocaleTimeString() + ' - ' : ''}${log.message}`
-                        : JSON.stringify(log)
-                    }
-                  </li>
-                ))
-              ) : (
-                <li>La partie n'a pas encore commencé</li>
-              )}
-            </ul>
-          </div>
-          
-          <div className="cards-container">
-            <div className="player-cards">
-              <h4>Vos cartes</h4>
-              <div className="cards">
-                {table.players.find(p => p.isHuman)?.hand?.length > 0 ? (
-                  table.players.find(p => p.isHuman).hand.map((card: any, index: number) => {
-                    let suitSymbol = card.suit;
-                    if (card.suit === 'Spade') suitSymbol = '♠';
-                    else if (card.suit === 'Heart') suitSymbol = '♥';
-                    else if (card.suit === 'Diamond') suitSymbol = '♦';
-                    else if (card.suit === 'Clover') suitSymbol = '♣';
+          <div className="game-main-content">
+            <div className="game-left-column">
+              <div className="game-log container-block">
+                <h4>Avancement de la partie (Tour {table.turn}/4)</h4>
+                <ul className="logs">
+                  {table.gameLog && table.gameLog.length > 0 ? (
+                    table.gameLog.map((log, index) => (
+                      <li key={index}>
+                        {typeof log === 'string'
+                          ? log
+                          : log.message
+                            ? `${log.timestamp ? new Date(log.timestamp).toLocaleTimeString() + ' - ' : ''}${log.message}`
+                            : JSON.stringify(log)
+                        }
+                      </li>
+                    ))
+                  ) : (
+                    <li>La partie n'a pas encore commencé</li>
+                  )}
+                </ul>
+              </div>
+              
+              <div className="cards-container">
+                <div className="player-cards container-block">
+                  <h4>Vos cartes</h4>
+                  <div className="cards">
+                    {table.players.find(p => p.isHuman)?.hand?.length > 0 ? (
+                      table.players.find(p => p.isHuman).hand.map((card: any, index: number) => {
+                        let suitSymbol = card.suit;
+                        if (card.suit === 'Spade') suitSymbol = '♠';
+                        else if (card.suit === 'Heart') suitSymbol = '♥';
+                        else if (card.suit === 'Diamond') suitSymbol = '♦';
+                        else if (card.suit === 'Clover') suitSymbol = '♣';
 
-                    const isRed = suitSymbol === '♥' || suitSymbol === '♦';
+                        const isRed = suitSymbol === '♥' || suitSymbol === '♦';
 
-                    return (
-                      <div className={`card ${isRed ? 'red-card' : 'black-card'}`} key={index}>
-                        <span className="card-value">{card.value}</span>
-                        <span className="card-suit">{suitSymbol}</span>
-                      </div>
-                    );
-                  })
+                        return (
+                          <div className={`card ${isRed ? 'red-card' : 'black-card'}`} key={index}>
+                            <span className="card-value">{card.value}</span>
+                            <span className="card-suit">{suitSymbol}</span>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="no-cards-message">Vos cartes apparaîtront ici</div>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="river-cards container-block">
+                  <h4>Les cartes de la table</h4>
+                  <div className="cards">
+                    {table.river && table.river.length > 0 ? (
+                      table.river.map((card: any, index: number) => {
+                        let suitSymbol = card.suit;
+                        if (card.suit === 'Spade') suitSymbol = '♠';
+                        else if (card.suit === 'Heart') suitSymbol = '♥';                        else if (card.suit === 'Diamond') suitSymbol = '♦';
+                        else if (card.suit === 'Club') suitSymbol = '♣';
+                        else if (card.suit === 'Clover') suitSymbol = '♣';
+
+                        const isRed = suitSymbol === '♥' || suitSymbol === '♦';
+
+                        return (
+                          <div className={`card ${isRed ? 'red-card' : 'black-card'}`} key={index}>
+                            <span className="card-value">{card.value}</span>
+                            <span className="card-suit">{suitSymbol}</span>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="no-cards-message">Les cartes seront révélées pendant la partie</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="game-actions container-block">
+                {table.status === 'En cours' ? (
+                  <div className="action-buttons">
+                    <button 
+                      className="action-button check"
+                      onClick={() => handleAction('check')}
+                      disabled={processingAction || table.currentBet !== 0}
+                    >
+                      {processingAction ? 'En cours...' : 'Faire parole'}
+                    </button>
+                    
+                    <button 
+                      className="action-button follow"
+                      onClick={() => handleAction('call')}
+                      disabled={processingAction}
+                    >
+                      {processingAction ? 'En cours...' : `Suivre (${table.currentBet}€)`}
+                    </button>
+                    
+                    <div className="raise-container">
+                      <button 
+                        className="action-button raise"
+                        onClick={() => handleAction('raise', raiseAmount)}
+                        disabled={processingAction || raiseAmount < table.currentBet}
+                      >
+                        {processingAction ? 'En cours...' : 'Relancer'}
+                      </button>
+                      <input 
+                        type="number" 
+                        min={table.currentBet} 
+                        step={table.smallBlind}
+                        value={raiseAmount} 
+                        onChange={handleRaiseAmountChange}
+                        className="raise-amount"
+                        placeholder={`Min ${table.currentBet}€`}
+                      />
+                    </div>
+                    
+                    <button 
+                      className="action-button fold"
+                      onClick={() => handleAction('fold')}
+                      disabled={processingAction}
+                    >
+                      {processingAction ? 'En cours...' : 'Se coucher'}
+                    </button>
+                  </div>
                 ) : (
-                  <div className="no-cards-message">Vos cartes apparaîtront ici</div>
+                  <button
+                    className="action-button start"
+                    onClick={() => handleStartGame(table.id)}
+                    disabled={startingGame || table.players.length < table.minPlayers}
+                  >
+                    {startingGame ? 'Démarrage...' : 'Démarrer la partie'}
+                  </button>
                 )}
               </div>
             </div>
             
-            <div className="river-cards">
-              <h4>Les cartes de la table</h4>
-              <div className="cards">
-                {table.river && table.river.length > 0 ? (
-                  table.river.map((card: any, index: number) => {
-                    let suitSymbol = card.suit;
-                    if (card.suit === 'Spade') suitSymbol = '♠';
-                    else if (card.suit === 'Heart') suitSymbol = '♥';                    else if (card.suit === 'Diamond') suitSymbol = '♦';
-                    else if (card.suit === 'Club') suitSymbol = '♣';
-                    else if (card.suit === 'Clover') suitSymbol = '♣';
-
-                    const isRed = suitSymbol === '♥' || suitSymbol === '♦';
-
-                    return (
-                      <div className={`card ${isRed ? 'red-card' : 'black-card'}`} key={index}>
-                        <span className="card-value">{card.value}</span>
-                        <span className="card-suit">{suitSymbol}</span>
+            <div className="players-section container-block">
+              <h4>Joueurs à la table</h4>
+              <div className="players-list">
+                {table.players.map((player, index) => (
+                  <div 
+                    key={index} 
+                    className={`player-item ${player.isCurrentPlayer ? 'current-player' : ''} ${player.hasFolded ? 'folded-player' : ''}`}
+                  >
+                    <div className="player-info">
+                      <span className="player-name">{player.name}</span>
+                      <span className="player-chips">{player.chips}€</span>
+                      
+                      <div className="player-roles">
+                        {table.dealerPosition === index && (
+                          <span className="player-role dealer">Dealer</span>
+                        )}
+                        {(table.dealerPosition + 1) % table.players.length === index && (
+                          <span className="player-role small-blind">Petite Blinde</span>
+                        )}
+                        {(table.dealerPosition + 2) % table.players.length === index && (
+                          <span className="player-role big-blind">Grande Blinde</span>
+                        )}
+                        {player.isCurrentPlayer && (
+                          <span className="player-role current">Tour actuel</span>
+                        )}
                       </div>
-                    );
-                  })
-                ) : (
-                  <div className="no-cards-message">Les cartes seront révélées pendant la partie</div>
-                )}
-              </div>
-            </div>
-          </div>
-          
-          <div className="players-section">
-            <h4>Joueurs à la table</h4>
-            <div className="players-list">
-              {table.players.map((player, index) => (
-                <div 
-                  key={index} 
-                  className={`player-item ${player.isCurrentPlayer ? 'current-player' : ''} ${player.hasFolded ? 'folded-player' : ''}`}
-                >
-                  <div className="player-info">
-                    <span className="player-name">{player.name}</span>
-                    <span className="player-chips">{player.chips}€</span>
-                    
-                    <div className="player-roles">
-                      {table.dealerPosition === index && (
-                        <span className="player-role dealer">Dealer</span>
-                      )}
-                      {(table.dealerPosition + 1) % table.players.length === index && (
-                        <span className="player-role small-blind">Petite Blinde</span>
-                      )}
-                      {(table.dealerPosition + 2) % table.players.length === index && (
-                        <span className="player-role big-blind">Grande Blinde</span>
-                      )}
-                      {player.isCurrentPlayer && (
-                        <span className="player-role current">Tour actuel</span>
+                      
+                      {player.currentBet > 0 && (
+                        <span className="player-bet">Mise: {player.currentBet}€</span>
                       )}
                     </div>
-                    
-                    {player.currentBet > 0 && (
-                      <span className="player-bet">Mise: {player.currentBet}€</span>
-                    )}
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-
-          <div className="game-actions">
-            {table.status === 'En cours' ? (
-              <>
-                <div className="game-info">
-                  <p className="pot-info">Pot: {table.pot}€</p>
-                  <p className="bet-info">Mise actuelle: {table.currentBet}€</p>
-                  <p className="blind-info">Petite Blinde: {table.smallBlind}€ / Grande Blinde: {table.bigBlind}€</p>
-                </div>
-                <div className="action-buttons">
-                  <button 
-                    className="action-button follow"
-                    onClick={() => handleAction('call')}
-                    disabled={processingAction}
-                  >
-                    {processingAction ? 'En cours...' : `Suivre (${table.currentBet}€)`}
-                  </button>
-                  
-                  <div className="raise-container">
-                    <button 
-                      className="action-button raise"
-                      onClick={() => handleAction('raise', raiseAmount)}
-                      disabled={processingAction || raiseAmount < table.currentBet}
-                    >
-                      {processingAction ? 'En cours...' : 'Relancer'}
-                    </button>
-                    <input 
-                      type="number" 
-                      min={table.currentBet} 
-                      step={table.smallBlind}
-                      value={raiseAmount} 
-                      onChange={handleRaiseAmountChange}
-                      className="raise-amount"
-                      placeholder={`Min ${table.currentBet}€`}
-                    />
-                  </div>
-                  
-                  <button 
-                    className="action-button fold"
-                    onClick={() => handleAction('fold')}
-                    disabled={processingAction}
-                  >
-                    {processingAction ? 'En cours...' : 'Se coucher'}
-                  </button>
-                </div>
-              </>
-            ) : (
-              <button
-                className="action-button start"
-                onClick={() => handleStartGame(table.id)}
-                disabled={startingGame || table.players.length < table.minPlayers}
-              >
-                {startingGame ? 'Démarrage...' : 'Démarrer la partie'}
-              </button>
-            )}
           </div>
         </>
       )}
