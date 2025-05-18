@@ -31,24 +31,61 @@ const GamePage: React.FC = () => {
   const [raiseAmount, setRaiseAmount] = useState<number>(0);
   const [processingAction, setProcessingAction] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [actionCounter, setActionCounter] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
-  // Fonction pour afficher les messages d'erreur
-  const showError = (message: string) => {
+ const showError = (message: string) => {
     setErrorMessage(message);
     setTimeout(() => setErrorMessage(null), 5000);
   };
-  
-  // Fonction pour afficher les messages de succès
-  const showSuccess = (message: string) => {
-    setSuccessMessage(message);
-    setTimeout(() => setSuccessMessage(null), 5000);
+
+//  const handleEndGame = useCallback(async () => {
+//   let isMounted = true;
+//   console.log('handleEndGame called');
+
+//   try {
+//     if (!table) {
+//       console.error('Table is null. Cannot update the status.');
+//       return;
+//     }
+//     const token = localStorage.getItem('token');
+//     if (!token) {
+//       alert('Vous devez être connecté pour terminer la partie');
+//       navigate('/login');
+//       return;
+//     }
+
+//     // Update status de table à "Fin de partie"
+//     const updatedTable = { ...table, status: 'Fin de partie' } as Table;
+//     if (isMounted) setTable(updatedTable);
+
+//     navigate('/endGame');
+
+//     // Optionally, update status to "En attente" after navigation
+//     // if (isMounted) setTable({ ...table, status: 'En attente' } as Table);
+//   } catch (err: any) {
+//     if (isMounted) setError(err.message);
+//   }
+
+//   return () => {
+//     isMounted = false;
+//   };
+// }, [table, navigate]);
+  useEffect(() => {
+    if (actionCounter >= 4) {
+      navigate('/endGame');
+    }
+  }, [actionCounter, navigate]);
+
+  // Wrap your handleAction to increment the counter
+  const handleActionWithCount = async (action: string, amount?: number) => {
+    setActionCounter((prev) => prev + 1);
+    await handleAction(action, amount);
   };
-  
+
   useEffect(() => {
     let isMounted = true;
-    // console.log('Effet exécuté, tableId:', tableId);
 
     const fetchTable = async () => {
       if (!tableId) {
@@ -65,20 +102,17 @@ const GamePage: React.FC = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        // console.log('Réponse API:', response);
 
         if (!response.ok) {
           throw new Error('Impossible de récupérer les détails de la table');
         }
 
         const data = await response.json();
-        // console.log('Données de la table reçues:', data);
         if (isMounted) setTable(data);
       } catch (err: any) {
-        // console.error('Erreur lors de la récupération:', err);
         if (isMounted) setError(err.message);
       } finally {
         if (isMounted) setLoading(false);
@@ -87,43 +121,12 @@ const GamePage: React.FC = () => {
 
     fetchTable();
 
-    return () => {
-      isMounted = false;
-    };
-  }, [tableId]);
-  // Effet pour rafraîchir périodiquement l'état de la table
-  useEffect(() => {
-    let isMounted = true;
-    let interval: NodeJS.Timeout;
-    
-    // Toujours rafraîchir, même si la partie n'est pas en cours
-    interval = setInterval(async () => {
-      if (!tableId || !isMounted) return;
-      
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:3000/tables/${tableId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-        });
 
-        if (response.ok && isMounted) {
-          const updatedData = await response.json();
-          setTable(updatedData);
-        }
-      } catch (err) {
-        console.error('Erreur lors du rafraîchissement de la table:', err);
-      }
-    }, 3000); // Rafraîchir toutes les 3 secondes
-    
     return () => {
       isMounted = false;
-      if (interval) clearInterval(interval);
     };
   }, [tableId]);
+
 
   const handleStartGame = async (tableId: number) => {
     let isMounted = true;
@@ -231,10 +234,8 @@ const GamePage: React.FC = () => {
         setTable(updatedData);
         
         // Si le joueur se couche, rediriger vers la page de fin de partie
-        if (action === 'fold') {
-          setTimeout(() => {
+        if (action === 'fold' || table.status === 'Fin de partie') {
             if (isMounted) navigate('/endGame');
-          }, 1500);
         }
       }    } catch (err: any) {
       if (isMounted) {
@@ -244,7 +245,7 @@ const GamePage: React.FC = () => {
     } finally {
       if (isMounted) {
         setProcessingAction(false);
-        setRaiseAmount(0); // Réinitialiser le montant de relance
+        setRaiseAmount(0); 
       }
     }
     
@@ -260,6 +261,7 @@ const GamePage: React.FC = () => {
       setRaiseAmount(value);
     }
   };
+  
 
   //! ici le return !!!!!
   return (    
@@ -396,58 +398,58 @@ const GamePage: React.FC = () => {
               </div>
               <div className="game-actions container-block">
                 {table.status === 'En cours' ? (
-                  <div className="action-buttons">
-                    <button 
-                      className="action-button check"
-                      onClick={() => handleAction('check')}
-                      disabled={processingAction || table.currentBet !== 0}
-                    >
-                      {processingAction ? 'En cours...' : 'Faire parole'}
-                    </button>
-                    
-                    <button 
-                      className="action-button follow"
-                      onClick={() => handleAction('call')}
-                      disabled={processingAction}
-                    >
-                      {processingAction ? 'En cours...' : `Suivre (${table.currentBet}€)`}
-                    </button>
-                    
-                    <div className="raise-container">
-                      <button 
-                        className="action-button raise"
-                        onClick={() => handleAction('raise', raiseAmount)}
-                        disabled={processingAction || raiseAmount < table.currentBet}
+                    <div className="action-buttons">
+                      <button
+                        className="action-button check"
+                        onClick={() => handleActionWithCount('check')}
+                        disabled={processingAction || table.currentBet !== 0}
                       >
-                        {processingAction ? 'En cours...' : 'Relancer'}
+                        {processingAction ? 'En cours...' : 'Faire parole'}
                       </button>
-                      <input 
-                        type="number" 
-                        min={table.currentBet} 
-                        step={table.smallBlind}
-                        value={raiseAmount} 
-                        onChange={handleRaiseAmountChange}
-                        className="raise-amount"
-                        placeholder={`Min ${table.currentBet}€`}
-                      />
+
+                      <button
+                        className="action-button follow"
+                        onClick={() => handleActionWithCount('call')}
+                        disabled={processingAction}
+                      >
+                        {processingAction ? 'En cours...' : `Suivre (${table.currentBet}€)`}
+                      </button>
+
+                      <div className="raise-container">
+                        <button
+                        className="action-button raise"
+                          onClick={() => handleActionWithCount('raise', raiseAmount)}
+                          disabled={processingAction || raiseAmount < table.currentBet}
+                        >
+                          {processingAction ? 'En cours...' : 'Relancer'}
+                        </button>
+                        <input
+                          type="number"
+                          min={table.currentBet}
+                          step={table.smallBlind}
+                          value={raiseAmount}
+                          onChange={handleRaiseAmountChange}
+                          className="raise-amount"
+                          placeholder={`Min ${table.currentBet}€`}
+                        />
+                      </div>
+
+                      <button
+                        className="action-button fold"
+                        onClick={() => handleActionWithCount('fold')}
+                        disabled={processingAction}
+                      >
+                        {processingAction ? 'En cours...' : 'Se coucher'}
+                      </button>
                     </div>
-                    
-                    <button 
-                      className="action-button fold"
-                      onClick={() => handleAction('fold')}
-                      disabled={processingAction}
+                  ) : (
+                    <button
+                      className="action-button start"
+                      onClick={() => handleStartGame(table.id)}
+                      disabled={startingGame}
                     >
-                      {processingAction ? 'En cours...' : 'Se coucher'}
+                      {startingGame ? 'Démarrage...' : 'Démarrer la partie'}
                     </button>
-                  </div>
-                ) : (
-                  <button
-                    className="action-button start"
-                    onClick={() => handleStartGame(table.id)}
-                    disabled={startingGame}
-                  >
-                    {startingGame ? 'Démarrage...' : 'Démarrer la partie'}
-                  </button>
                 )}
               </div>
             </div>
